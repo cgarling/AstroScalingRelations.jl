@@ -1,0 +1,1057 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     35020,       1047]
+NotebookOptionsPosition[     32456,        957]
+NotebookOutlinePosition[     32804,        972]
+CellTagsIndexPosition[     32761,        969]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[TextData[{
+ "Implementing ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["D", "HI"], " ", "-", " ", 
+    SubscriptBox["M", "HI"]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " relation\nThe relation between total HI mass and ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["D", "HI"], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " (defined as the HI diameter where the surface density is 1 solar mass / \
+pc^2) as given by Wang 2016 is \n",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubscriptBox["log", "10"], "(", 
+     SubscriptBox["D", "HI"], ")"}], " ", "=", 
+    RowBox[{
+     RowBox[{"0.506", " ", 
+      RowBox[{
+       SubscriptBox["log", "10"], "(", 
+       SubscriptBox["M", "HI"], ")"}]}], "-", "3.293"}]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ "\nThus we have 2 unknowns in the surface density formula\n\
+\[CapitalSigma](r) = ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["\[CapitalSigma]", "0"], " ", 
+    RowBox[{"Exp", "(", 
+     RowBox[{
+      RowBox[{"-", "r"}], "/", "rs"}], ")"}]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ "\nnamely ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["\[CapitalSigma]", "0"], " "}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ "and rs, and two constraints: \n",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["M", "HI"], "=", 
+    RowBox[{
+     SubsuperscriptBox["\[Integral]", "0", "\[Infinity]"], 
+     RowBox[{"2", "\[Pi]", " ", "r", " ", 
+      SubscriptBox["\[CapitalSigma]", "0"], " ", 
+      RowBox[{"Exp", "(", 
+       RowBox[{
+        RowBox[{"-", "r"}], "/", "rs"}], ")"}], 
+      RowBox[{"\[DifferentialD]", "r"}]}]}]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ "\n1 solmass / pc^2 = ",
+ Cell[BoxData[
+  RowBox[{
+   SubscriptBox["\[CapitalSigma]", "0"], " ", 
+   RowBox[{"Exp", "[", 
+    RowBox[{
+     RowBox[{"-", 
+      RowBox[{"(", 
+       RowBox[{
+        SubscriptBox["D", "HI"], "/", "2"}], ")"}]}], "/", "rs"}], "]"}]}]]],
+ "\nThe above integral is analytic,"
+}], "Text",
+ CellChangeTimes->{{3.8656884156178846`*^9, 3.865688523990906*^9}, {
+   3.8656885850329432`*^9, 3.865688759878919*^9}, 3.8656888037530823`*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  SubsuperscriptBox["\[Integral]", "0", "\[Infinity]"], 
+  RowBox[{"2", " ", "\[Pi]", " ", "r", " ", 
+   SubscriptBox["\[CapitalSigma]", "0"], " ", 
+   RowBox[{"Exp", "[", 
+    RowBox[{
+     RowBox[{"-", "r"}], "/", "rs"}], "]"}], 
+   RowBox[{"\[DifferentialD]", "r"}]}]}]], "Input",
+ CellChangeTimes->{{3.8656887648148937`*^9, 3.865688789024718*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ConditionalExpression", "[", 
+  RowBox[{
+   RowBox[{"2", " ", "\[Pi]", " ", 
+    SuperscriptBox["rs", "2"], " ", 
+    SubscriptBox["\[CapitalSigma]", "0"]}], ",", 
+   RowBox[{
+    RowBox[{"Re", "[", "rs", "]"}], ">", "0"}]}], "]"}]], "Output",
+ CellChangeTimes->{3.8656887916491423`*^9}]
+}, Open  ]],
+
+Cell[TextData[{
+ "Such that ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["M", "HI"], "=", 
+    RowBox[{"2", "\[Pi]", " ", 
+     SubscriptBox["\[CapitalSigma]", "0"], " ", 
+     SuperscriptBox["rs", "2"]}]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ". Given two equations and two unknowns, we can solve"
+}], "Text",
+ CellChangeTimes->{{3.8656888108629103`*^9, 3.865688846419848*^9}, {
+  3.8656888876435366`*^9, 3.8656888938097887`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Solve", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     FractionBox["MHI", 
+      RowBox[{"2", " ", "\[Pi]", "  ", 
+       SuperscriptBox["rs", "2"]}]], 
+     RowBox[{"Exp", "[", 
+      FractionBox[
+       RowBox[{"-", 
+        RowBox[{"(", 
+         RowBox[{"DHI", "/", "2"}], ")"}]}], "rs"], "]"}]}], "\[Equal]", 
+    "x"}], ",", "rs"}], "]"}]], "Input",
+ CellChangeTimes->{{3.8656902157230377`*^9, 3.865690248547629*^9}, 
+   3.865691192249435*^9, {3.865691831116969*^9, 3.865691853222249*^9}, {
+   3.8656920430353904`*^9, 3.865692058951848*^9}, {3.8657023553131294`*^9, 
+   3.8657023554826202`*^9}}],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Solve","ifun",
+   "\"Inverse functions are being used by \
+\\!\\(\\*RowBox[{\\\"Solve\\\"}]\\), so some solutions may not be found; use \
+Reduce for complete solution information.\"",2,39,17,18313616569453723023,
+   "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{
+  3.865690249480281*^9, 3.8656911950459404`*^9, {3.865691837113044*^9, 
+   3.865691853924814*^9}, {3.865692049448482*^9, 3.8656920607754703`*^9}, 
+   3.86570235816535*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"rs", "\[Rule]", 
+     RowBox[{"-", 
+      FractionBox["DHI", 
+       RowBox[{"4", " ", 
+        RowBox[{"ProductLog", "[", 
+         RowBox[{
+          RowBox[{"-", 
+           FractionBox["1", "2"]}], " ", 
+          SqrtBox[
+           FractionBox["\[Pi]", "2"]], " ", 
+          SqrtBox[
+           FractionBox[
+            RowBox[{
+             SuperscriptBox["DHI", "2"], " ", "x"}], "MHI"]]}], "]"}]}]]}]}], 
+    "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"rs", "\[Rule]", 
+     RowBox[{"-", 
+      FractionBox["DHI", 
+       RowBox[{"4", " ", 
+        RowBox[{"ProductLog", "[", 
+         RowBox[{
+          FractionBox["1", "2"], " ", 
+          SqrtBox[
+           FractionBox["\[Pi]", "2"]], " ", 
+          SqrtBox[
+           FractionBox[
+            RowBox[{
+             SuperscriptBox["DHI", "2"], " ", "x"}], "MHI"]]}], "]"}]}]]}]}], 
+    "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.865690249481289*^9, 3.865691195056057*^9, {3.8656918371233954`*^9, 
+   3.865691853934297*^9}, {3.865692049458572*^9, 3.86569206078541*^9}, 
+   3.865702358176338*^9}]
+}, Open  ]],
+
+Cell[TextData[{
+ "Move the negative exponential over \n",
+ Cell[BoxData[
+  RowBox[{
+   FractionBox["MHI", 
+    RowBox[{"2", " ", "\[Pi]", "  ", 
+     SuperscriptBox["rs", "2"]}]], "\[Equal]", 
+   RowBox[{"x", " ", 
+    RowBox[{"Exp", "[", 
+     FractionBox[
+      RowBox[{"(", 
+       RowBox[{"DHI", "/", "2"}], ")"}], "rs"], "]"}], " "}]}]], "Input",
+  CellChangeTimes->{{3.8656902157230377`*^9, 3.865690248547629*^9}, 
+    3.865691192249435*^9, {3.865691831116969*^9, 3.865691853222249*^9}, {
+    3.8656920430353904`*^9, 3.865692058951848*^9}, {3.8657023553131294`*^9, 
+    3.8657023554826202`*^9}}],
+ "\n"
+}], "Text",
+ CellChangeTimes->{{3.865719717538842*^9, 3.8657198548725777`*^9}, {
+  3.865719921114024*^9, 3.865719949627974*^9}, {3.865720337528036*^9, 
+  3.8657203713655043`*^9}}],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Solve","nsmet",
+   "\"This system cannot be solved with the methods available to Solve.\"",2,
+   67,26,18313616569453723023,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{{3.8657198416076365`*^9, 3.865719856781242*^9}, {
+  3.8657199237249928`*^9, 3.865719950372616*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Solve", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     SuperscriptBox["\[ExponentialE]", 
+      RowBox[{"-", 
+       FractionBox["DHI", 
+        RowBox[{
+         SqrtBox[
+          RowBox[{"2", " ", "\[Pi]"}]], " ", 
+         SqrtBox[
+          RowBox[{"MHI", " ", "\[CapitalSigma]"}]]}]]}]], " ", 
+     "\[CapitalSigma]"}], "\[Equal]", "x"}], ",", "\[CapitalSigma]"}], 
+  "]"}]], "Output",
+ CellChangeTimes->{{3.8657198278026886`*^9, 3.865719856790713*^9}, {
+  3.865719923734413*^9, 3.86571995038211*^9}}],
+
+Cell["This gives too much output to be useful", "Text",
+ CellChangeTimes->{{3.865765431210909*^9, 3.8657654372623234`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Reduce", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     FractionBox["MHI", 
+      RowBox[{"2", " ", "\[Pi]", "  ", 
+       SuperscriptBox["rs", "2"]}]], 
+     RowBox[{"Exp", "[", 
+      FractionBox[
+       RowBox[{"-", 
+        RowBox[{"(", 
+         RowBox[{"DHI", "/", "2"}], ")"}]}], "rs"], "]"}]}], "\[Equal]", 
+    "x"}], ",", "rs", ",", "Reals"}], "]"}]], "Input",
+ CellChangeTimes->{{3.865706645767895*^9, 3.865706651424534*^9}, {
+  3.865706693983594*^9, 3.865706695833634*^9}, {3.865706806419075*^9, 
+  3.8657068072113447`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ProductLog", "[", 
+  RowBox[{
+   RowBox[{"-", "0.5"}], "*", 
+   RowBox[{"Sqrt", "[", 
+    RowBox[{"\[Pi]", "/", "2"}], "]"}], " ", "*", " ", 
+   RowBox[{"Sqrt", "[", 
+    RowBox[{
+     SuperscriptBox["0.5", "2"], "/", 
+     SuperscriptBox["10", "6"]}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.865691119394724*^9, 3.8656911442797985`*^9}, {
+  3.8656912060458345`*^9, 3.8656912270391884`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"-", "0.0003134267552664529`"}]], "Output",
+ CellChangeTimes->{{3.86569121677894*^9, 3.8656912280893316`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"D", "[", 
+  RowBox[{
+   RowBox[{"-", 
+    FractionBox["DHI", 
+     RowBox[{"4", " ", 
+      RowBox[{"ProductLog", "[", 
+       RowBox[{
+        RowBox[{"-", 
+         FractionBox["1", "2"]}], " ", 
+        SqrtBox[
+         FractionBox[
+          SuperscriptBox["DHI", "2"], "MHI"]], " ", 
+        SqrtBox[
+         FractionBox["\[Pi]", "2"]]}], "]"}]}]]}], ",", "MHI"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.8656928376562457`*^9, 3.8656928414163465`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"-", 
+  FractionBox["DHI", 
+   RowBox[{"8", " ", "MHI", " ", 
+    RowBox[{"ProductLog", "[", 
+     RowBox[{
+      RowBox[{"-", 
+       FractionBox["1", "2"]}], " ", 
+      SqrtBox[
+       FractionBox[
+        SuperscriptBox["DHI", "2"], "MHI"]], " ", 
+      SqrtBox[
+       FractionBox["\[Pi]", "2"]]}], "]"}], " ", 
+    RowBox[{"(", 
+     RowBox[{"1", "+", 
+      RowBox[{"ProductLog", "[", 
+       RowBox[{
+        RowBox[{"-", 
+         FractionBox["1", "2"]}], " ", 
+        SqrtBox[
+         FractionBox[
+          SuperscriptBox["DHI", "2"], "MHI"]], " ", 
+        SqrtBox[
+         FractionBox["\[Pi]", "2"]]}], "]"}]}], ")"}]}]]}]], "Output",
+ CellChangeTimes->{3.8656928425191536`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"D", "[", 
+  RowBox[{
+   RowBox[{"-", 
+    FractionBox["DHI", 
+     RowBox[{"4", " ", 
+      RowBox[{"ProductLog", "[", 
+       RowBox[{
+        RowBox[{"-", 
+         FractionBox["1", "2"]}], " ", 
+        SqrtBox[
+         FractionBox[
+          SuperscriptBox["DHI", "2"], "MHI"]], " ", 
+        SqrtBox[
+         FractionBox["\[Pi]", "2"]]}], "]"}]}]]}], ",", "DHI"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.8657013222336035`*^9, 3.8657013224029512`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"-", 
+   FractionBox["1", 
+    RowBox[{"4", " ", 
+     RowBox[{"ProductLog", "[", 
+      RowBox[{
+       RowBox[{"-", 
+        FractionBox["1", "2"]}], " ", 
+       SqrtBox[
+        FractionBox[
+         SuperscriptBox["DHI", "2"], "MHI"]], " ", 
+       SqrtBox[
+        FractionBox["\[Pi]", "2"]]}], "]"}]}]]}], "+", 
+  FractionBox["1", 
+   RowBox[{"4", " ", 
+    RowBox[{"ProductLog", "[", 
+     RowBox[{
+      RowBox[{"-", 
+       FractionBox["1", "2"]}], " ", 
+      SqrtBox[
+       FractionBox[
+        SuperscriptBox["DHI", "2"], "MHI"]], " ", 
+      SqrtBox[
+       FractionBox["\[Pi]", "2"]]}], "]"}], " ", 
+    RowBox[{"(", 
+     RowBox[{"1", "+", 
+      RowBox[{"ProductLog", "[", 
+       RowBox[{
+        RowBox[{"-", 
+         FractionBox["1", "2"]}], " ", 
+        SqrtBox[
+         FractionBox[
+          SuperscriptBox["DHI", "2"], "MHI"]], " ", 
+        SqrtBox[
+         FractionBox["\[Pi]", "2"]]}], "]"}]}], ")"}]}]]}]], "Output",
+ CellChangeTimes->{3.865701324657792*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ProductLog", "[", 
+  RowBox[{"-", "0.4"}], "]"}]], "Input",
+ CellChangeTimes->{{3.8657052375319147`*^9, 3.8657052717680535`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"-", "0.9440897382649356`"}], "+", 
+  RowBox[{"0.4072679640328575`", " ", "\[ImaginaryI]"}]}]], "Output",
+ CellChangeTimes->{{3.86570524332712*^9, 3.865705272811195*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ProductLog", "[", 
+  RowBox[{"0", ",", 
+   RowBox[{"-", "0.4"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.8657052745493174`*^9, 3.865705278302783*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"-", "0.9440897382649356`"}], "+", 
+  RowBox[{"0.4072679640328575`", " ", "\[ImaginaryI]"}]}]], "Output",
+ CellChangeTimes->{3.865705279531713*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{"ProductLog", "[", "x", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", 
+     RowBox[{
+      RowBox[{"-", "1"}], "/", "E"}], ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.8657087735988283`*^9, 3.865708813050274*^9}, {
+  3.865722332151189*^9, 3.8657223371642838`*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[{{{}, {}, 
+    TagBox[
+     {RGBColor[0.368417, 0.506779, 0.709798], AbsoluteThickness[1.6], Opacity[
+      1.], LineBox[CompressedData["
+1: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
+       "]]},
+     Annotation[#, "Charting`Private`Tag$101573#1"]& ]}, {}, {}},
+  AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+  Axes->{True, True},
+  AxesLabel->{None, None},
+  AxesOrigin->{0, 0},
+  DisplayFunction->Identity,
+  Frame->{{False, False}, {False, False}},
+  FrameLabel->{{None, None}, {None, None}},
+  FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+  GridLines->{None, None},
+  GridLinesStyle->Directive[
+    GrayLevel[0.5, 0.4]],
+  ImagePadding->All,
+  Method->{
+   "DefaultBoundaryStyle" -> Automatic, "DefaultMeshStyle" -> 
+    AbsolutePointSize[6], "ScalingFunctions" -> None, 
+    "CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+        (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+         Part[#, 1]], 
+        (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+         Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+        (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+         Part[#, 1]], 
+        (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+         Part[#, 2]]}& )}},
+  PlotRange->
+   NCache[{{(-1)/E, 1}, {-0.999610478243444, 
+     0.5671432803071216}}, {{-0.36787944117144233`, 1}, {-0.999610478243444, 
+     0.5671432803071216}}],
+  PlotRangeClipping->True,
+  PlotRangePadding->{{
+     Scaled[0.02], 
+     Scaled[0.02]}, {
+     Scaled[0.05], 
+     Scaled[0.05]}},
+  Ticks->{Automatic, Automatic}]], "Output",
+ CellChangeTimes->{
+  3.8657087747345123`*^9, 3.865708813563678*^9, {3.8657223336706095`*^9, 
+   3.86572233765609*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{"ProductLog", "[", 
+    RowBox[{
+     RowBox[{"-", "1"}], ",", "x"}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", 
+     RowBox[{
+      RowBox[{"-", "1"}], "/", "E"}], ",", "0"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.865719514148071*^9, 3.8657195303670225`*^9}, {
+  3.865719586555646*^9, 3.865719602220909*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[{{{}, {}, 
+    TagBox[
+     {RGBColor[0.368417, 0.506779, 0.709798], AbsoluteThickness[1.6], Opacity[
+      1.], LineBox[CompressedData["
+1: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
+agXsThXl0WAyWOv9f8ib8H98hStd
+       "]]},
+     Annotation[#, "Charting`Private`Tag$98707#1"]& ]}, {}, {}},
+  AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+  Axes->{True, True},
+  AxesLabel->{None, None},
+  AxesOrigin->{0, -7.504321458426351},
+  DisplayFunction->Identity,
+  Frame->{{False, False}, {False, False}},
+  FrameLabel->{{None, None}, {None, None}},
+  FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+  GridLines->{None, None},
+  GridLinesStyle->Directive[
+    GrayLevel[0.5, 0.4]],
+  ImagePadding->All,
+  Method->{
+   "DefaultBoundaryStyle" -> Automatic, "DefaultMeshStyle" -> 
+    AbsolutePointSize[6], "ScalingFunctions" -> None, 
+    "CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+        (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+         Part[#, 1]], 
+        (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+         Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+        (Part[{{Identity, Identity}, {Identity, Identity}}, 1, 2][#]& )[
+         Part[#, 1]], 
+        (Part[{{Identity, Identity}, {Identity, Identity}}, 2, 2][#]& )[
+         Part[#, 2]]}& )}},
+  PlotRange->
+   NCache[{{(-1)/E, 
+      0}, {-7.504321458426351, -1.0002020441156378`}}, \
+{{-0.36787944117144233`, 0}, {-7.504321458426351, -1.0002020441156378`}}],
+  PlotRangeClipping->True,
+  PlotRangePadding->{{
+     Scaled[0.02], 
+     Scaled[0.02]}, {
+     Scaled[0.05], 
+     Scaled[0.05]}},
+  Ticks->{Automatic, Automatic}]], "Output",
+ CellChangeTimes->{{3.865719520508712*^9, 3.865719531234223*^9}, {
+  3.8657195872554584`*^9, 3.865719603162418*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ProductLog", "[", 
+  RowBox[{
+   RowBox[{"-", "2"}], "/", "E"}], "]"}]], "Input",
+ CellChangeTimes->{{3.865708816894112*^9, 3.86570883411578*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ProductLog", "[", 
+  RowBox[{"-", 
+   FractionBox["2", "\[ExponentialE]"]}], "]"}]], "Output",
+ CellChangeTimes->{{3.8657088203763533`*^9, 3.8657088345931716`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"N", "[", 
+  RowBox[{"ProductLog", "[", 
+   RowBox[{
+    RowBox[{"-", 
+     FractionBox["1", "\[ExponentialE]"]}], "-", "0.1"}], "]"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.865708856985462*^9, 3.865708907274919*^9}, {
+  3.8657223507719555`*^9, 3.8657223762671604`*^9}},
+ NumberMarks->False],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"-", "0.8388335670236704`"}], "+", 
+  RowBox[{"0.6842524722234532`", " ", "\[ImaginaryI]"}]}]], "Output",
+ CellChangeTimes->{
+  3.865708837129088*^9, {3.865708889480027*^9, 3.8657089080913935`*^9}, {
+   3.8657223515913944`*^9, 3.8657223773912697`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Solve", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"D", "[", 
+     RowBox[{
+      RowBox[{"1", " ", "-", " ", 
+       RowBox[{"x", " ", "*", " ", 
+        RowBox[{"Exp", "[", 
+         RowBox[{
+          RowBox[{"-", "DD"}], "/", 
+          RowBox[{"(", 
+           RowBox[{"2", "*", 
+            RowBox[{"Sqrt", "[", 
+             RowBox[{"M", "/", 
+              RowBox[{"(", 
+               RowBox[{"2", "\[Pi]", " ", "x"}], ")"}]}], "]"}]}], ")"}]}], 
+         "]"}]}]}], ",", "x"}], "]"}], "\[Equal]", "0"}], ",", "x"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.8657654756785913`*^9, 3.8657655536781507`*^9}, {
+  3.865766282511721*^9, 3.8657662832629085`*^9}, {3.865766320488906*^9, 
+  3.865766321336754*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"{", 
+   RowBox[{"x", "\[Rule]", 
+    FractionBox[
+     RowBox[{"8", " ", "M"}], 
+     RowBox[{
+      SuperscriptBox["DD", "2"], " ", "\[Pi]"}]]}], "}"}], "}"}]], "Output",
+ CellChangeTimes->{{3.865765529430582*^9, 3.8657655554277463`*^9}, 
+   3.865766146912423*^9, 3.8657661895115194`*^9, 3.865766283930061*^9, 
+   3.865766322053793*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Solve", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"1", " ", "-", " ", 
+     RowBox[{"x", " ", "*", " ", 
+      RowBox[{"Exp", "[", 
+       RowBox[{
+        RowBox[{"-", "DD"}], "/", 
+        RowBox[{"(", 
+         RowBox[{"2", "*", 
+          RowBox[{"Sqrt", "[", 
+           RowBox[{"M", "/", 
+            RowBox[{"(", 
+             RowBox[{"2", "\[Pi]", " ", "x"}], ")"}]}], "]"}]}], ")"}]}], 
+       "]"}]}]}], "\[Equal]", "0"}], ",", "x", ",", "Reals"}], "]"}]], "Input",
+ CellChangeTimes->{{3.865766601575845*^9, 3.8657666142073927`*^9}, {
+  3.8657666484432836`*^9, 3.8657666522859097`*^9}, {3.865766682654915*^9, 
+  3.8657666984913034`*^9}, {3.865766732976701*^9, 3.86576679249446*^9}}],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Solve","nsmet",
+   "\"This system cannot be solved with the methods available to Solve.\"",2,
+   103,47,18313616569453723023,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{
+  3.865766653383168*^9, 3.8657667004957533`*^9, 3.8657667373799124`*^9, {
+   3.8657667685929027`*^9, 3.8657667933372884`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Solve", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"1", "-", 
+     RowBox[{
+      SuperscriptBox["\[ExponentialE]", 
+       RowBox[{"-", 
+        FractionBox[
+         RowBox[{"DD", " ", 
+          SqrtBox[
+           FractionBox["\[Pi]", "2"]]}], 
+         SqrtBox[
+          FractionBox["M", "x"]]]}]], " ", "x"}]}], "\[Equal]", "0"}], ",", 
+   "x", ",", "Reals"}], "]"}]], "Output",
+ CellChangeTimes->{
+  3.865766653384206*^9, 3.865766700506648*^9, 3.8657667375076256`*^9, {
+   3.8657667687197523`*^9, 3.8657667933452616`*^9}}]
+}, Open  ]],
+
+Cell["\<\
+This just reduces to the same thing as solving for rs, \
+doesn\[CloseCurlyQuote]t get us around the Lambert W problem\
+\>", "Text",
+ CellChangeTimes->{{3.8657676902777557`*^9, 3.8657677083226557`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Solve", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     FractionBox["1", 
+      RowBox[{"Sqrt", "[", "x", "]"}]], 
+     RowBox[{"Log", "[", 
+      FractionBox["1", "x"], "]"}]}], "\[Equal]", 
+    FractionBox[
+     RowBox[{"-", "D"}], 
+     RowBox[{"2", 
+      RowBox[{"Sqrt", "[", 
+       FractionBox["M", 
+        RowBox[{"2", "\[Pi]"}]], "]"}]}]]}], ",", "x"}], "]"}]], "Input",
+ CellChangeTimes->{{3.8657672115892067`*^9, 3.8657672569400387`*^9}, {
+  3.865767358411989*^9, 3.8657673619567337`*^9}}],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Solve","ifun",
+   "\"Inverse functions are being used by \
+\\!\\(\\*RowBox[{\\\"Solve\\\"}]\\), so some solutions may not be found; use \
+Reduce for complete solution information.\"",2,109,55,18313616569453723023,
+   "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{
+  3.8657672584813786`*^9, {3.865767359349679*^9, 3.865767363458433*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"x", "\[Rule]", 
+     FractionBox[
+      RowBox[{"8", " ", "M", " ", 
+       SuperscriptBox[
+        RowBox[{"ProductLog", "[", 
+         RowBox[{
+          RowBox[{"-", 
+           FractionBox["1", "2"]}], " ", 
+          SqrtBox[
+           FractionBox[
+            SuperscriptBox["D", "2"], "M"]], " ", 
+          SqrtBox[
+           FractionBox["\[Pi]", "2"]]}], "]"}], "2"]}], 
+      RowBox[{
+       SuperscriptBox["D", "2"], " ", "\[Pi]"}]]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", "\[Rule]", 
+     FractionBox[
+      RowBox[{"8", " ", "M", " ", 
+       SuperscriptBox[
+        RowBox[{"ProductLog", "[", 
+         RowBox[{
+          FractionBox["1", "2"], " ", 
+          SqrtBox[
+           FractionBox[
+            SuperscriptBox["D", "2"], "M"]], " ", 
+          SqrtBox[
+           FractionBox["\[Pi]", "2"]]}], "]"}], "2"]}], 
+      RowBox[{
+       SuperscriptBox["D", "2"], " ", "\[Pi]"}]]}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.8657672584830847`*^9, {3.865767359359203*^9, 3.8657673634669003`*^9}}]
+}, Open  ]],
+
+Cell["\<\
+What if we change the definition of the HI mass to be the total mass enclosed \
+within DHI?\
+\>", "Text",
+ CellChangeTimes->{{3.8657713359649496`*^9, 3.8657713493759437`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  SubsuperscriptBox["\[Integral]", "0", 
+   RowBox[{"DHI", "/", "2"}]], 
+  RowBox[{"2", " ", "\[Pi]", " ", "r", " ", 
+   SubscriptBox["\[CapitalSigma]", "0"], " ", 
+   RowBox[{"Exp", "[", 
+    RowBox[{
+     RowBox[{"-", "r"}], "/", "rs"}], "]"}], 
+   RowBox[{"\[DifferentialD]", "r"}]}]}]], "Input",
+ CellChangeTimes->{{3.8657717061375294`*^9, 3.8657717072949104`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"2", " ", "\[Pi]", " ", "rs", " ", 
+  RowBox[{"(", 
+   RowBox[{"rs", "-", 
+    RowBox[{
+     FractionBox["1", "2"], " ", 
+     SuperscriptBox["\[ExponentialE]", 
+      RowBox[{"-", 
+       FractionBox["DHI", 
+        RowBox[{"2", " ", "rs"}]]}]], " ", 
+     RowBox[{"(", 
+      RowBox[{"DHI", "+", 
+       RowBox[{"2", " ", "rs"}]}], ")"}]}]}], ")"}], " ", 
+  SubscriptBox["\[CapitalSigma]", "0"]}]], "Output",
+ CellChangeTimes->{3.8657717104428415`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Solve", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     FractionBox["MHI", 
+      RowBox[{"2", " ", "\[Pi]", " ", "rs", " ", 
+       RowBox[{"(", 
+        RowBox[{"rs", "-", 
+         RowBox[{
+          FractionBox["1", "2"], " ", 
+          SuperscriptBox["\[ExponentialE]", 
+           RowBox[{"-", 
+            FractionBox["DHI", 
+             RowBox[{"2", " ", "rs"}]]}]], " ", 
+          RowBox[{"(", 
+           RowBox[{"DHI", "+", 
+            RowBox[{"2", " ", "rs"}]}], ")"}]}]}], ")"}]}]], " ", 
+     RowBox[{"Exp", "[", 
+      FractionBox[
+       RowBox[{"-", 
+        RowBox[{"(", 
+         RowBox[{"DHI", "/", "2"}], ")"}]}], "rs"], "]"}]}], "\[Equal]", 
+    "1"}], ",", "rs"}], "]"}]], "Input",
+ CellChangeTimes->{{3.8657718398415947`*^9, 3.865771870111131*^9}, {
+  3.8657719343816957`*^9, 3.8657719423266697`*^9}}],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Solve","nsmet",
+   "\"This system cannot be solved with the methods available to Solve.\"",2,
+   115,60,18313616569453723023,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{{3.8657718476326656`*^9, 3.8657718724548807`*^9}, {
+  3.865771936371866*^9, 3.8657719430293384`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Solve", "[", 
+  RowBox[{
+   RowBox[{
+    FractionBox[
+     RowBox[{
+      SuperscriptBox["\[ExponentialE]", 
+       RowBox[{"-", 
+        FractionBox["DHI", 
+         RowBox[{"2", " ", "rs"}]]}]], " ", "MHI"}], 
+     RowBox[{"2", " ", "\[Pi]", " ", "rs", " ", 
+      RowBox[{"(", 
+       RowBox[{"rs", "-", 
+        RowBox[{
+         FractionBox["1", "2"], " ", 
+         SuperscriptBox["\[ExponentialE]", 
+          RowBox[{"-", 
+           FractionBox["DHI", 
+            RowBox[{"2", " ", "rs"}]]}]], " ", 
+         RowBox[{"(", 
+          RowBox[{"DHI", "+", 
+           RowBox[{"2", " ", "rs"}]}], ")"}]}]}], ")"}]}]], "\[Equal]", "1"}],
+    ",", "rs"}], "]"}]], "Output",
+ CellChangeTimes->{{3.8657718476335015`*^9, 3.86577187246284*^9}, {
+  3.8657719363806405`*^9, 3.865771943037943*^9}}]
+}, Open  ]],
+
+Cell["Not helpful", "Text",
+ CellChangeTimes->{{3.865771996212813*^9, 3.8657719990737915`*^9}}]
+},
+WindowSize->{1659, 833},
+WindowMargins->{{Automatic, -4}, {90, Automatic}},
+FrontEndVersion->"11.0 for Microsoft Windows (64-bit) (September 21, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 2215, 70, 189, "Text"],
+Cell[CellGroupData[{
+Cell[2798, 94, 375, 9, 48, "Input"],
+Cell[3176, 105, 311, 8, 33, "Output"]
+}, Open  ]],
+Cell[3502, 116, 462, 13, 32, "Text"],
+Cell[CellGroupData[{
+Cell[3989, 133, 625, 17, 52, "Input"],
+Cell[4617, 152, 490, 11, 21, "Message"],
+Cell[5110, 165, 1140, 37, 74, "Output"]
+}, Open  ]],
+Cell[6265, 205, 788, 20, 74, "Text"],
+Cell[7056, 227, 325, 7, 21, "Message"],
+Cell[7384, 236, 531, 16, 48, "Output"],
+Cell[7918, 254, 123, 1, 30, "Text"],
+Cell[8044, 257, 560, 16, 52, "Input"],
+Cell[CellGroupData[{
+Cell[8629, 277, 423, 11, 34, "Input"],
+Cell[9055, 290, 133, 2, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9225, 297, 485, 16, 79, "Input"],
+Cell[9713, 315, 717, 24, 79, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[10467, 344, 485, 16, 79, "Input"],
+Cell[10955, 362, 1025, 36, 79, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12017, 403, 153, 3, 30, "Input"],
+Cell[12173, 408, 204, 4, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12414, 417, 175, 4, 30, "Input"],
+Cell[12592, 423, 181, 4, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12810, 432, 344, 9, 30, "Input"],
+Cell[13157, 443, 4411, 88, 238, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[17605, 536, 388, 11, 30, "Input"],
+Cell[17996, 549, 5068, 98, 241, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[23101, 652, 170, 4, 30, "Input"],
+Cell[23274, 658, 188, 4, 46, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[23499, 667, 318, 9, 50, "Input"],
+Cell[23820, 678, 286, 6, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[24143, 689, 737, 21, 30, "Input"],
+Cell[24883, 712, 377, 10, 47, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[25297, 727, 715, 18, 30, "Input"],
+Cell[26015, 747, 354, 8, 21, "Message"],
+Cell[26372, 757, 552, 17, 82, "Output"]
+}, Open  ]],
+Cell[26939, 777, 211, 4, 30, "Text"],
+Cell[CellGroupData[{
+Cell[27175, 785, 524, 16, 62, "Input"],
+Cell[27702, 803, 392, 9, 21, "Message"],
+Cell[28097, 814, 1105, 35, 75, "Output"]
+}, Open  ]],
+Cell[29217, 852, 185, 4, 30, "Text"],
+Cell[CellGroupData[{
+Cell[29427, 860, 393, 10, 48, "Input"],
+Cell[29823, 872, 477, 14, 47, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[30337, 891, 852, 25, 71, "Input"],
+Cell[31192, 918, 328, 7, 21, "Message"],
+Cell[31523, 927, 819, 24, 76, "Output"]
+}, Open  ]],
+Cell[32357, 954, 95, 1, 30, "Text"]
+}
+]
+*)
+
+(* End of internal cache information *)
+

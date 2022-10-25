@@ -1,0 +1,21 @@
+These scale radii and central surface densities are evolved simultaneously with the satellite gas masses so that the satellites stay on the D$_\HI$-M$_\HI$ relation, as is observed even for satellites undergoing stripping \citep{Stevens2019,Naluminsa2021}. We first solve for the surface density parameters $\Sigma_0$ and $r_s$ at infall. Given the constraints $1 \, \text{M}_\odot \, \text{pc}^{-2} = \Sigma_0 \, \text{exp}[-\text{D}_{\HI}/(2 \, r_s)]$ and $M_{\HI} = 2\pi \, \Sigma_0 \int_0^\infty  r \, \text{exp}(-r/r_s) \, dr \, = \, 2 \pi \Sigma_0 \, r_s^2$, it can be shown that    
+\begin{equation}
+    \begin{aligned}
+        r_s &= \frac{-\text{D}_{\HI}}{4 \, W_0\left(-0.5 \, \text{D}_{\HI} \sqrt{\frac{\pi}{2 \, \text{M}_{\HI}} \, \frac{1 \, \text{M}_\odot}{\text{pc}^2}} \right)} \\
+        \Sigma_0 &= \frac{\text{M}_{\HI}}{2\pi r_s^2} \\
+    \end{aligned}
+\end{equation}
+where $W_0(z)$ is the principal branch of Lambert's $W$ function \citep[e.g.,][]{Corless1996}. These can be further differentiated with respect to M$_{\HI}$ to facilitate tracking during the solution of the differential equations; in particular, we have 
+
+\begin{equation} \label{equation:lambertdiff}
+    \begin{aligned}
+      C &= W_0\left(-0.5 \, \text{D}_{\HI} \sqrt{\frac{\pi}{2 \, \text{M}_{\HI}} \, \frac{1 \, \text{M}_\odot}{\text{pc}^2}} \right) \\
+      \frac{d \, r_s}{d \, \text{M}_{\HI}} &= \frac{-\text{D}_{\HI}}{8 \, \text{M}_{\HI} \, C \, (1+C)} + \left( \frac{1}{4C \, (1+C)} - \frac{1}{4C} \right) \frac{d \, \text{D}_{\HI}}{d \, \text{M}_{\HI}} \\
+      % &\frac{1}{1+C} - \\
+      % &\frac{}{} \\
+      \frac{d \, \Sigma_0}{d \, \text{M}_{\HI}} &= \frac{1}{2\pi r_s^2} - \frac{\text{M}_{\HI}}{\pi r_s^3} \, \frac{d \, r_s}{d \, \text{M}_{\HI}}
+    \end{aligned}
+\end{equation}
+such that the time differentials of $r_s$ and $\Sigma_0$ can be obtained by multiplying the above expressions by the rate of change of the \HI mass, $d \, \text{M}_{\HI} / dt$, as determined by our quenching models.\par
+
+As the input to Lambert's $W$ function is always negative and real in this application, there are in fact two solutions for $r_s$ and $\Sigma_0$; the principal branch solution as used above ($W_0(z)$) and the $k=-1$ branch solution ($W_{-1}(z)$). The latter gives solutions with unrealistically high $\Sigma_0$ and low $r_s$ for the low M$_{\HI}$ values we consider here, and so we always use the principal branch solution. There is another subtlety in that the principal branch of Lambert's $W$ for real $z$ is only defined for $z\geq-1/e$, where $e$ is Euler's constant. The argument we are providing to Lambert's $W$ will be less than $-1/e$ when M$_{\HI}$ is high; for the \cite{Wang2016b} \HI size-mass relation, this occurs when M$_{\HI}\approx1.9\times10^{10}$ M$_\odot$; this is far higher than we are dealing with in this work, but is well within the realistic range of \HI masses exhibited by galaxies. As $W_0(-1/e)=-1$, a reasonable extension beyond this mass is to set $r_s=\text{D}_{\HI}/4$.
