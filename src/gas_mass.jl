@@ -7,11 +7,11 @@ Returns the mean neutral hydrogen gas mass of a galaxy with stellar mass `Mstar`
 
 # Examples
 ```jldoctest
-julia> Papastergis2012(1e8)
-2.0417379446695232e8
+julia> Papastergis2012(1e8) ≈ 2.0417379446695232e8
+true
 
-julia> Papastergis2012(1e8 * UnitfulAstro.Msun)
-2.0417379446695232e8 M⊙
+julia> Papastergis2012(1e8 * UnitfulAstro.Msun) ≈ 2.0417379446695232e8 * UnitfulAstro.Msun
+true
 ```
 """
 Papastergis2012(Mstar) = exp10(0.57 * log10(Mstar) + 3.75)
@@ -25,11 +25,11 @@ Returns the median neutral hydrogen gas mass of an isolated galaxy with stellar 
 
 # Examples
 ```jldoctest
-julia> Bradford2015(1e8)
-4.487453899331332e8
+julia> Bradford2015(1e8) ≈ 4.487453899331332e8
+true
 
-julia> Bradford2015(1e8 * UnitfulAstro.Msun)
-4.487453899331332e8 M⊙
+julia> Bradford2015(1e8 * UnitfulAstro.Msun) ≈ 4.487453899331332e8 * UnitfulAstro.Msun
+true
 ```
 """
 Bradford2015(Mstar) = Mstar < exp10(8.6) ? exp10(1.052*log10(Mstar) + 0.236) : exp10(0.461*log10(Mstar) + 5.3186) # 5.329) # 5.329 is the published value, but it is not continuous
@@ -43,17 +43,17 @@ Returns the median neutral hydrogen gas mass of a galaxy with stellar mass `Msta
 
 # Examples
 ```jldoctest
-julia> Scoville2017(1e8)
-1.7759037070772731e9
+julia> Scoville2017(1e8) ≈ 1.7759037070772731e9
+true
 
-julia> Scoville2017(1e8 * UnitfulAstro.Msun)
-1.7759037070772731e9 M⊙
+julia> Scoville2017(1e8 * UnitfulAstro.Msun) ≈  1.7759037070772731e9 * UnitfulAstro.Msun
+true
 
-julia> Scoville2017(1e8, 1.0)
-6.357913365552342e9
+julia> Scoville2017(1e8, 1.0) ≈ 6.357913365552342e9
+true
 
-julia> Scoville2017(1e8 * UnitfulAstro.Msun, 1.0)
-6.357913365552342e9 M⊙
+julia> Scoville2017(1e8 * UnitfulAstro.Msun, 1.0) ≈ 6.357913365552342e9 * UnitfulAstro.Msun
+true
 ```
 """
 Scoville2017(Mstar) = 7.07e9 * (Mstar/1e10)^0.3
@@ -70,11 +70,11 @@ Returns the HI diameter, defined as the diameter at which the HI surface density
 
 # Examples
 ```jldoctest
-julia> Wang2016_DHI(1e8)
-5.688529308438413
+julia> Wang2016_DHI(1e8) ≈ 5.688529308438413
+true
 
-julia> Wang2016_DHI(1e8 * UnitfulAstro.Msun)
-5.688529308438413 kpc
+julia> Wang2016_DHI(1e8 * UnitfulAstro.Msun) ≈ 5.688529308438413 * UnitfulAstro.kpc
+true
 ```
 """
 Wang2016_DHI(MHI) = exp10(0.506 * log10(MHI) - 3.293)
@@ -87,11 +87,11 @@ Returns the central surface density `Σ₀` in Msun/pc^2 and the scale radius `r
 
 # Examples
 ```jldoctest
-julia> Wang2016_rho_rs(1e6)
-(4.009796759878976, 199.2273166291845)
+julia> all( Wang2016_rho_rs(1e6) .≈ (4.009796759878976, 199.2273166291845) )
+true
 
-julia> Wang2016_rho_rs(1e12)
-(7.045959041825033, 150293.43437081948)
+julia> all( Wang2016_rho_rs(1e12) .≈ (7.045959041825033, 150293.43437081948) )
+true
 ```
 """
 function Wang2016_rho_rs(MHI)

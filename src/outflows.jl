@@ -8,17 +8,17 @@ The model for the mass-loading factor η from [Muratov et al. 2015](http://adsab
 
 # Examples
 ```jldoctest
-julia> Muratov2015( 1e10 )
-3.6
+julia> Muratov2015( 1e10 ) ≈ 3.6
+true
 
-julia> Muratov2015( 1e10 * UnitfulAstro.Msun )
-3.6
+julia> Muratov2015( 1e10 * UnitfulAstro.Msun ) ≈ 3.6
+true
 
-julia> Muratov2015( 40, 1 )
-26.135392171726632
+julia> Muratov2015( 40, 1 ) ≈ 26.135392171726632
+true
 
-julia> Muratov2015( 40 * Unitful.km / Unitful.s, 1 )
-26.135392171726632
+julia> Muratov2015( 40 * Unitful.km / Unitful.s, 1 ) ≈ 26.135392171726632
+true
 ```
 """
 Muratov2015(Mstar) = 3.6 * (Mstar/1e10)^(-0.35)
@@ -36,11 +36,11 @@ The model for the mass-loading factor η from [Christensen et al. 2016](http://a
 
 # Examples
 ```jldoctest
-julia> Christensen2016( 40 )
-3.0028111668298063
+julia> Christensen2016( 40 ) ≈ 3.0028111668298063
+true
 
-julia> Christensen2016( 40 * Unitful.km / Unitful.s )
-3.0028111668298063
+julia> Christensen2016( 40 * Unitful.km / Unitful.s ) ≈ 3.0028111668298063
+true
 ```
 """
 Christensen2016(Vcirc) = 10047.546 * Vcirc^-2.2

@@ -7,11 +7,11 @@ Given a halo mass `Mh` (M200c in solar masses) and a redshift `z`, return the me
 
 # Examples
 ```jldoctest
-julia> Moster2013( 1e12, 0.0 )
-3.427515185606664e10
+julia> Moster2013( 1e12, 0.0 ) ≈ 3.427515185606664e10
+true
 
-julia> Moster2013( 1e12 * UnitfulAstro.Msun, 0.0 )
-3.427515185606664e10 M⊙
+julia> Moster2013( 1e12 * UnitfulAstro.Msun, 0.0 ) ≈ 3.427515185606664e10 * UnitfulAstro.Msun
+true
 ```
 """
 function Moster2013(Mh, z, M10=11.59, M11=1.195, N10=0.0351, N11=-0.0247, B10=1.376, B11=-0.826, gamma10=0.608, gamma11=0.329)
@@ -33,11 +33,11 @@ Given a halo mass `Mh` (specifically the peak virial halo mass in solar masses, 
 
 # Examples
 ```jldoctest
-julia> Behroozi2013( 1e12, 0.0 )
-2.6798246456860065e10
+julia> Behroozi2013( 1e12, 0.0 ) ≈ 2.6798246456860065e10
+true
 
-julia> Behroozi2013( 1e12 * UnitfulAstro.Msun, 0.0 )
-2.6798246456860065e10 M⊙
+julia> Behroozi2013( 1e12 * UnitfulAstro.Msun, 0.0 ) ≈ 2.6798246456860065e10 * UnitfulAstro.Msun
+true
 ```
 """
 function Behroozi2013(Mh, z)
@@ -63,11 +63,11 @@ Given a halo mass `Mh` (specifically the peak virial halo mass in solar masses, 
 
 # Examples
 ```jldoctest
-julia> GK14( 1e12, 0.0 )
-2.894144183405201e10
+julia> GK14( 1e12, 0.0 ) ≈ 2.894144183405201e10
+true
 
-julia> GK14( 1e12 * UnitfulAstro.Msun, 0.0 )
-2.894144183405201e10 M⊙
+julia> GK14( 1e12 * UnitfulAstro.Msun, 0.0 ) ≈ 2.894144183405201e10 * UnitfulAstro.Msun
+true
 ```
 """
 function GK14(Mh, z)
@@ -93,11 +93,11 @@ Given a halo mass `Mh` (specifically the peak virial halo mass in solar masses, 
 
 # Examples
 ```jldoctest
-julia> GK17_field( 1e12, 0.0, -0.2 )
-2.9300795754861504e10
+julia> GK17_field( 1e12, 0.0, -0.2 ) ≈ 2.9300795754861504e10
+true
 
-julia> GK17_field( 1e12 * UnitfulAstro.Msun, 0.0, -0.2 )
-2.9300795754861504e10 M⊙
+julia> GK17_field( 1e12 * UnitfulAstro.Msun, 0.0, -0.2 ) ≈ 2.9300795754861504e10 * UnitfulAstro.Msun
+true
 ```
 """
 function GK17_field(Mh, z, nu=-0.2)
@@ -126,11 +126,11 @@ Given a halo mass `Mh` (specifically the peak virial halo mass in solar masses, 
 
 # Examples
 ```jldoctest
-julia> GK17_sat( 1e12, 0.0, -0.2 )
-2.860110341918958e10
+julia> GK17_sat( 1e12, 0.0, -0.2 ) ≈ 2.860110341918958e10
+true
 
-julia> GK17_sat( 1e12 * UnitfulAstro.Msun, 0.0, -0.2 )
-2.860110341918958e10 M⊙
+julia> GK17_sat( 1e12 * UnitfulAstro.Msun, 0.0, -0.2 ) ≈ 2.860110341918958e10 * UnitfulAstro.Msun
+true
 ```
 """
 function GK17_sat(Mh, z, nu=-0.2)
