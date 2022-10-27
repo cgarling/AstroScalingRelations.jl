@@ -1,7 +1,9 @@
 module AstroScalingRelations
 
-import Unitful as u
-import UnitfulAstro as ua
+import Unitful
+const u = Unitful
+import UnitfulAstro
+const ua = UnitfulAstro
 import LambertW: lambertw
 
 include("smhm.jl")
