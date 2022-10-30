@@ -3,6 +3,7 @@ The following methods are part of our publicly exported API.
 
 ## Stellar-Mass-Halo-Mass Relation
 ```@docs
+flum
 Moster2013
 Behroozi2013
 GK14

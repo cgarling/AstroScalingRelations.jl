@@ -37,7 +37,7 @@ Bradford2015(Mstar::u.Mass) = Bradford2015(u.ustrip(ua.Msun, Mstar)) * ua.Msun
 
 
 """
-    Scoville2017(Mstar [, z, SFR])
+    Scoville2017(Mstar [, z])
 
 Returns the median neutral hydrogen gas mass of a galaxy with stellar mass `Mstar` in solar masses at redshift `z` according to Equation 6 in [Scoville et al. 2017](http://adsabs.harvard.edu/abs/2017ApJ...837..150S). This does not include the specfic star formation rate dependence. These are derived from ALMA dust continuum emission (see Section 4) for well-studied galaxies in the COSMOS field between redshifts 0.3 and 4.5. If `Mstar` is a `Unitful.Mass`, will return a `Unitful.Mass`.
 
