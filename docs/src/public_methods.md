@@ -25,3 +25,8 @@ Scoville2017
 Wang2016_DHI
 Wang2016_rho_rs
 ```
+
+## Galaxy Sizes
+```@docs
+galaxy_size
+```

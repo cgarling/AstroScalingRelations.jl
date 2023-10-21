@@ -21,8 +21,8 @@ Scaling relation for galaxy half-light radius with the virial radius of the dark
 
 ```math
 \\begin{aligned}
-ρ_\\text{thresh} &= \\bar{ρ} Δ_\\text{vir}(z) \\newline
-R_\\text{vir} &= \\sqrt[3]{ \\frac{3 \\, \\text{M}_h}{4π \\; \\bar{ρ}(z)  \\; Δ_\\text{vir}}} \\newline
+ρ_\\text{thresh} &= ρ_c(z) \\, Δ_\\text{vir} \\newline
+R_\\text{vir} &= \\sqrt[3]{ \\frac{3 \\, \\text{M}_h}{4π \\; ρ_c(z)  \\; Δ_\\text{vir}}} \\newline
 R_h(\\text{M}_h, z) &= A_r \\; f_p f_k \\; R_\\text{vir}
 \\end{aligned}
 ```
