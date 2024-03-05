@@ -44,7 +44,7 @@ galaxy_size(Mh, ρthresh; Aᵣ=0.02, fₚfₖ=0.78) = Aᵣ * fₚfₖ * cbrt( 3 
 # Exports
 
 export flum, Moster2013, Behroozi2013, GK14, GK17_field, GK17_sat  # Exports from smhm.jl
-export Muratov2015, Christensen2016 # Exports from outflows.jl
+export Muratov2015, Christensen2016, Pandya2021 # Exports from outflows.jl
 export Papastergis2012, Bradford2015, Scoville2017, Wang2016_DHI, Wang2016_rho_rs # Exports from gas_mass.jl
 export galaxy_size # Exports from AstroScalingRelations.jl main file
 

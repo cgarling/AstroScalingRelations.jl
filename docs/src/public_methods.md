@@ -15,6 +15,7 @@ GK17_sat
 ```@docs
 Muratov2015
 Christensen2016
+Pandya2021
 ```
 
 ## Gas Mass / Profile Relations
