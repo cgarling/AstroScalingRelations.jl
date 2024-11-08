@@ -27,6 +27,19 @@ Wang2016_DHI
 Wang2016_rho_rs
 ```
 
+## Mass-Metallicity Relations
+```@docs
+AstroScalingRelations.AbstractMZR
+MoustakasMZR
+CurtiMZR
+OH
+dOH_dMstar
+OH_from_Z
+Z_from_OH
+dZ_dOH
+dZ_dMstar
+```
+
 ## Galaxy Sizes
 ```@docs
 galaxy_size

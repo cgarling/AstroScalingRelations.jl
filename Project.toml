@@ -4,12 +4,14 @@ authors = ["cgarling <chris.t.garling@gmail.com>"]
 version = "0.1.0"
 
 [deps]
+IrrationalConstants = "92d709cd-6900-40b7-9082-c6be49f344b6"
 LambertW = "984bce1d-4616-540c-a9ee-88d1112d94c9"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 UnitfulAstro = "6112ee07-acf9-5e0f-b108-d242c714bf9f"
 
 [compat]
 Documenter = "0.27, 1"
+IrrationalConstants = "0.2"
 LambertW = "0.4, 1"
 Test = "<0.0.1, 1"
 Unitful = "0.9, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 1"

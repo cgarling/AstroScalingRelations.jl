@@ -11,7 +11,10 @@ makedocs(
     format = Documenter.HTML(;prettyurls = get(ENV, "CI", nothing) == "true"),
     authors = "Chris Garling",
     pages = ["index.md", "public_methods.md"],
-    doctest=true
+    doctest=true,
+    linkcheck=true,
+    # Do not error if we are missing a docstring in the module or if an external link is invalid
+    warnonly = [:missing_docs, :linkcheck]    
 )
 
 deploydocs(;
