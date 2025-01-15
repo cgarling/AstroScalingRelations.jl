@@ -1,6 +1,7 @@
 """ `AbstractMZR{T <: Real}`: abstract supertype for all mass-metallicity relations. """
 abstract type AbstractMZR{T <: Real} end
 Base.Broadcast.broadcastable(m::AbstractMZR) = Ref(m)
+(mzr::AbstractMZR)(Mstar::Real) = OH(mzr, Mstar) # Make all subtypes callable
 
 """
     OH(mzr::AbstractMZR, Mstar::Real)
@@ -16,7 +17,7 @@ true
 OH(mzr::AbstractMZR, Mstar::Real)
 OH(mzr::AbstractMZR, Mstar::u.Mass) = OH(mzr, u.ustrip(ua.Msun, Mstar))
 """
-    dOH_dMstar(mzr::AbstractMZR, Mstar::Real)
+    dOH_dMstar(mzr::AbstractMZR, Mstar::Union{Real, Unitful.Mass})
 
 Returns the partial derivative of the mass-metallicity relation `mzr` with respect to the stellar mass evaluated at `Mstar` [M⊙], where the metallicity is defined as ``12 + \\log(\\text{O} / \\text{H})``.
 
@@ -28,6 +29,34 @@ true
 """
 dOH_dMstar(mzr::AbstractMZR, Mstar::Real)
 dOH_dMstar(mzr::AbstractMZR, Mstar::u.Mass) = dOH_dMstar(mzr, u.ustrip(ua.Msun, Mstar))
+
+"""
+    dOH_dlnMstar(mzr::AbstractMZR, Mstar::Union{Real, Unitful.Mass})
+
+Returns the partial derivative of the mass-metallicity relation `mzr` with respect to the natural logarithm of the stellar mass evaluated at `Mstar` [M⊙], where the metallicity is defined as ``12 + \\log(\\text{O} / \\text{H})``. Mathematically, the following are equivalent: `dOH_dlnMstar(mzr, Mstar) = Mstar * dOH_dMstar(mzr, Mstar)`.
+
+# Examples
+```jldoctest
+julia> dOH_dlnMstar(AstroScalingRelations.Andrews2013, 1e8) ≈ 2.1971001283624613e-9 * 1e8
+true
+```
+"""
+dOH_dlnMstar(mzr::AbstractMZR, Mstar::Real) = dOH_dMstar(mzr, Mstar) * Mstar
+dOH_dlnMstar(mzr::AbstractMZR, Mstar::u.Mass) = dOH_dMstar(mzr, Mstar) * u.ustrip(ua.Msun, Mstar)
+
+"""
+    dOH_dlog10Mstar(mzr::AbstractMZR, Mstar::Union{Real, Unitful.Mass})
+
+Returns the partial derivative of the mass-metallicity relation `mzr` with respect to the base-10 logarithm of the stellar mass evaluated at `Mstar` [M⊙], where the metallicity is defined as ``12 + \\log(\\text{O} / \\text{H})``. Mathematically, the following are equivalent: `dOH_dlog10Mstar(mzr, Mstar) = log(10) * dOH_dlnMstar(mzr, Mstar)`.
+
+# Examples
+```jldoctest
+julia> dOH_dlog10Mstar(AstroScalingRelations.Andrews2013, 1e8) ≈ 2.1971001283624613e-9 *
+                                                                 1e8 * log(10)
+true
+```
+"""
+dOH_dlog10Mstar(mzr::AbstractMZR, Mstar::Union{Real, u.Mass}) = dOH_dlnMstar(mzr, Mstar) * logten
 
 """
     OH_from_Z(Z::Real, X::Real, f_O::Real)
@@ -105,6 +134,9 @@ function dZ_dMstar(mzr::AbstractMZR, Mstar::Union{Real, u.Mass}, X::Real, f_O::R
 end
 # using ForwardDiff: derivative; using AstroScalingRelations: Z_from_OH, OH, Andrews2013; derivative(mstar -> Z_from_OH(OH(Andrews2013, mstar), 0.74, 0.35), 1e7)
 
+
+#### Types
+
 """
     MoustakasMZR(OH0::Real, M_to::Real, γ::Real)
 
@@ -174,3 +206,54 @@ end
 
 "Result from [Curti et al. 2020](https://ui.adsabs.harvard.edu/abs/2020MNRAS.491..944C/abstract) with `OH0=8.793 ± 0.005`, `log10(M_to) = 10.02 ± 0.09`, `γ = 0.28 ± 0.02`, and `β = 1.2 ± 0.2` based on fitting data from SDSS DR7 -- this is mostly the same data as was used to derive the `Andrews2013` result, but Curti 2020 used new strong-line metallicity calibrations."
 const Curti2020 = CurtiMZR(8.793, exp10(10.02), 0.28, 1.2)
+
+#################################################################################
+
+# struct Ma2016MZR{T <: Real} <: AbstractMZR{T}
+#     γ::T    # Power law slope
+#     # Zten::T # Metal mass fraction at M_* = 10^10 solar masses
+#     A::T    # A, B, C control redshift evolution of Z_{10}, which is
+#     B::T    # the metal mass fraction at M_* = 10^10 solar masses
+#     C::T
+# end
+# Ma2016MZR(γ::Real, A::Real, B::Real, C::Real) =
+#     Ma2016MZR(promote(γ, A, B, C)...)
+"""
+    PowerLawMZR(α::Real, β::Real, logMstar0::Real)
+Mass-metallicity model described by a single power law index `α`, a metallicity normalization `β`, and the logarithm of the stellar mass `logMstar0 = log10(Mstar0 [M⊙])` at which the metallicity is `β`. Such a power law MZR is often used when extrapolating literature results to low masses, e.g., ``\\text{M}_* < 10^8 \\; \\text{M}_\\odot.``
+
+# Specific Instances
+ - [`Ma2016Gas`](@ref) and [`Ma2016Stars`](@ref) are redshift-dependent power law MZR models fit to the gas-phase and stellar mass-metallicity relations in simulated FIRE galaxies.
+"""
+struct PowerLawMZR{T <: Real} <: AbstractMZR{T}
+    α::T # Power law slope
+    β::T # Metallicity at log10(Mstar) = logMstar0
+    logMstar0::T 
+end
+PowerLawMZR(α::Real, β::Real, logMstar0::Real) = 
+    PowerLawMZR(promote(α, β, logMstar0)...)
+OH(mzr::PowerLawMZR, Mstar::Real) = mzr.α * (log10(Mstar) - mzr.logMstar0) + mzr.β
+dOH_dMstar(mzr::PowerLawMZR, Mstar::Real) = mzr.α / Mstar / logten
+
+"""
+    Ma2016Gas(z::Real, γ::Real=0.35; A::Real=0.93, B::Real=0.43, C::Real=-1.05)::PowerLawMZR
+Returns a [`PowerLawMZR`](@ref) instance valid at redshift `z` given the gas-phase mass-metallicity relation measured for FIRE galaxies by [Ma et al. 2016](https://ui.adsabs.harvard.edu/abs/2016MNRAS.456.2140M/abstract). `γ` is the power law slope and `A, B, C` control the redshift evolution of the model.
+
+See also [`Ma2016Stars`](@ref) for the stellar mass-metallicity relation measured in the same work. 
+"""
+function Ma2016Gas(z::Real, γ::Real=0.35; A::Real=0.93, B::Real=0.43, C::Real=-1.05)
+    Zten = A * exp(-B * z) + C
+    # Zten is the log(Zgas / Z⊙) = 12 + log(O/H) - 9; so we have to add 9
+    return PowerLawMZR(γ, Zten + 9, 10)
+end
+"""
+    Ma2016Stars(z::Real, γ::Real=0.4; A::Real=0.67, B::Real=0.5, C::Real=-1.04)::PowerLawMZR
+Returns a [`PowerLawMZR`](@ref) instance valid at redshift `z` given the stellar mass-metallicity relation measured for FIRE galaxies by [Ma et al. 2016](https://ui.adsabs.harvard.edu/abs/2016MNRAS.456.2140M/abstract). `γ` is the power law slope and `A, B, C` control the redshift evolution of the model.
+
+See also [`Ma2016Gas`](@ref) for the gas-phase mass-metallicity relation measured in the same work. 
+"""
+function Ma2016Stars(z::Real, γ::Real=0.4; A::Real=0.67, B::Real=0.5, C::Real=-1.04)
+    Zten = A * exp(-B * z) + C
+    # Zten is the log(Zgas / Z⊙) = 12 + log(O/H) - 9; so we have to add 9
+    return PowerLawMZR(γ, Zten + 9, 10)
+end
