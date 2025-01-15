@@ -32,8 +32,13 @@ Wang2016_rho_rs
 AstroScalingRelations.AbstractMZR
 MoustakasMZR
 CurtiMZR
+PowerLawMZR
+Ma2016Gas
+Ma2016Stars
 OH
 dOH_dMstar
+dOH_dlnMstar
+dOH_dlog10Mstar
 OH_from_Z
 Z_from_OH
 dZ_dOH
