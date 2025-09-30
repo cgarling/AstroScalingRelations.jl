@@ -236,6 +236,42 @@ OH(mzr::PowerLawMZR, Mstar::Real) = mzr.α * (log10(Mstar) - mzr.logMstar0) + mz
 dOH_dMstar(mzr::PowerLawMZR, Mstar::Real) = mzr.α / Mstar / logten
 
 """
+    BrokenPowerLawMZR(breaks, slopes, β, logMstar0)
+"""
+struct BrokenPowerLawMZR{A, B, C, T} <: AbstractMZR{T}
+    breaks::A
+    slopes::B
+    β::C         # Normalization factors so that log10(Mstar) = logMstar0
+    logMstar0::T
+    function BrokenPowerLawMZR(breaks::A, slopes::B, β::T, logMstar0::T) where {A, B, T}
+        if length(breaks) != length(slopes) + 1
+            throw(DimensionMismatch("`length(breaks)` must be equal to `length(slopes) + 1`."))
+        end
+        if !issorted(breaks)
+            throw(ArgumentError("`breaks` must be provided in sorted order."))
+        end
+        Base.require_one_based_indexing(breaks, slopes)
+        β_vec = Vector{T}(undef, length(slopes))
+        β_vec[1] = one(T)
+        for i in 2:length(β_vec)
+            β_vec[i] = β_vec[i-1] * breaks[i]^slopes[i-1] / breaks[i]^slopes[i]
+        end
+        i = max(searchsortedfirst(breaks, logMstar0), firstindex(breaks))
+        βnorm = exp10(logMstar0)^slopes[i-1]
+        β_vec .*= β_vec[i] / βnorm
+        new{A, B, typeof(β_vec), T}(breaks, slopes, β_vec, logMstar0)
+    end
+end
+BrokenPowerLawMZR(breaks, slopes, β, logMstar0) = BrokenPowerLawMZR(breaks, slopes, promote(β, logMstar0)...)
+function OH(mzr::BrokenPowerLawMZR, Mstar::Real)
+    logMstar = log10(Mstar)
+    i = searchsortedfirst(mzr.breaks, logMstar)
+    i = max(firstindex(mzr.breaks), min(i, lastindex(mzr.breaks)))
+    α = mzr.slopes[i]
+    return α * (logMstar - mzr.logMstar0) + mzr.β
+end
+
+"""
     Ma2016Gas(z::Real, γ::Real=0.35; A::Real=0.93, B::Real=0.43, C::Real=-1.05)::PowerLawMZR
 Returns a [`PowerLawMZR`](@ref) instance valid at redshift `z` given the gas-phase mass-metallicity relation measured for FIRE galaxies by [Ma et al. 2016](https://ui.adsabs.harvard.edu/abs/2016MNRAS.456.2140M/abstract). `γ` is the power law slope and `A, B, C` control the redshift evolution of the model.
 
