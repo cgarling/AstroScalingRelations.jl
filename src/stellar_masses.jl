@@ -5,7 +5,7 @@
 
 Returns the stellar mass in solar masses for an early-type galaxy using the empirical
 near-infrared mass estimator from Section 5 of
-[Longhetti & Saracco 2009](https://doi.org/10.1111/j.1365-2966.2008.14396.x).
+[Longhetti & Saracco 2009](https://doi.org/10.1111/j.1365-2966.2008.14375.x).
 
 The estimator requires only the apparent K-band magnitude and the observed (V-K) colour,
 making it independent of multi-wavelength SED fitting. It was calibrated on early-type
