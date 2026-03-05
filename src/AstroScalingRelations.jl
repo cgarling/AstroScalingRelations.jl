@@ -11,6 +11,7 @@ include("smhm.jl")
 include("outflows.jl")
 include("gas_mass.jl")
 include("mass_metallicity_relation.jl")
+include("stellar_masses.jl")
 
 ####################################
 # Galaxy sizes
@@ -50,5 +51,6 @@ export Muratov2015, Christensen2016, Pandya2021 # Exports from outflows.jl
 export Papastergis2012, Bradford2015, Scoville2017, Wang2016_DHI, Wang2016_rho_rs # Exports from gas_mass.jl
 export OH, dOH_dMstar, dOH_dlnMstar, dOH_dlog10Mstar, OH_from_Z, Z_from_OH, dZ_dOH, dZ_dMstar, MoustakasMZR, CurtiMZR, PowerLawMZR, Ma2016Gas, Ma2016Stars # Exports from mass_metallicity_relation.jl
 export galaxy_size # Exports from AstroScalingRelations.jl main file
+export Longhetti2009 # Exports from stellar_masses.jl
 
 end # module

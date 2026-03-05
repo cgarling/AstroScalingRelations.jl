@@ -49,3 +49,8 @@ dZ_dMstar
 ```@docs
 galaxy_size
 ```
+
+## Stellar Masses
+```@docs
+Longhetti2009
+```
