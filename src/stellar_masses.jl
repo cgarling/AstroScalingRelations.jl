@@ -52,7 +52,7 @@ true
 function Longhetti2009(mK, VK, z, d_mod)
     kcor = -0.32 - 0.65*z - 0.314*z^2 - 0.0735*z^3
     MK = mK - d_mod - kcor
-    log_ML = 0.086 * VK - 0.863
-    log_M = log_ML - 0.4 * MK + 1.364
+    log_ML = 0.086 * VK - 0.863 # Equation 15
+    log_M = log_ML - 0.4 * MK + 1.364 # Equation 14; 0.4 * M_K_sun = 1.364
     return exp10(log_M)
 end
